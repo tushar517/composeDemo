@@ -16,16 +16,16 @@ import com.example.coroutinechannel.viewModel.home.HomeEvent
 import com.example.coroutinechannel.viewModel.home.HomeState
 
 @Composable
-fun HomeScreen(data: HomeState, onEvent: (HomeEvent) -> Unit = { }, userDetail: UserDetail) {
+fun HomeScreen(data: HomeState, onEvent: (HomeEvent) -> Unit = { }) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("userName: ${userDetail.userName}",style = typography.bodyLarge)
+        Text("userName: ${data.userName}",style = typography.bodyLarge)
         Spacer(
             Modifier
             .height(20.dp))
-        Text("password: ${userDetail.password}", style = typography.bodyLarge)
+        Text("password: ${data.password}", style = typography.bodyLarge)
     }
 }

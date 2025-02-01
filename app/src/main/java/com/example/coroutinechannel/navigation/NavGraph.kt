@@ -20,16 +20,11 @@ fun HomeGraph(navHostController: NavHostController){
         startDestination = Login,
     ){
         composable<Home> {entry->
-            val userDetail = entry.toRoute<Home>()
             val viewModel = hiltViewModel<HomeViewModel>()
             val data = viewModel.state.collectAsStateWithLifecycle()
             HomeScreen(
                 data = data.value,
-                onEvent = viewModel::onEvent,
-                userDetail = UserDetail(
-                    userName = userDetail.userName,
-                    password = userDetail.password
-                )
+                onEvent = viewModel::onEvent
             )
         }
         composable<Login> {
