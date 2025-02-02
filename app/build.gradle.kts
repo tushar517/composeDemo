@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     kotlin("plugin.serialization")
+    id("kotlin-parcelize")
 }
 
 android {

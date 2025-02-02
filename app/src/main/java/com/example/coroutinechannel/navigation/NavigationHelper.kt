@@ -1,12 +1,16 @@
 package com.example.coroutinechannel.navigation
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class Home(val userName:String,val password:String)
+data class Home(val userDetail: UserDetail)
+
+@Parcelize
 @Serializable
-data class UserDetail(val userName:String,val password:String)
+data class UserDetail(val userName:String,val password:String):Parcelable
 
 @Serializable
 object Login

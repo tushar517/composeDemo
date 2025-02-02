@@ -34,6 +34,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.coroutinechannel.R
 import com.example.coroutinechannel.data.model.ApiResult
 import com.example.coroutinechannel.navigation.Home
+import com.example.coroutinechannel.navigation.UserDetail
 import com.example.coroutinechannel.ui.components.CustomButton
 import com.example.coroutinechannel.ui.components.CustomLoader
 import com.example.coroutinechannel.ui.components.CustomTextField
@@ -45,7 +46,7 @@ import com.example.coroutinechannel.viewModel.login.LoginEvent
 import com.example.coroutinechannel.viewModel.login.LoginState
 
 @Composable
-fun LoginScreen(data: LoginState, onEvent: (LoginEvent) -> Unit,navController: NavController) {
+fun LoginScreen(data: LoginState, onEvent: (LoginEvent) -> Unit, navController: NavController) {
     val context = LocalContext.current
     var employeeCode by remember {
         mutableStateOf("")
@@ -61,18 +62,23 @@ fun LoginScreen(data: LoginState, onEvent: (LoginEvent) -> Unit,navController: N
             employeeCode.isNotBlank() && password.isNotBlank()
         }
     }
-
     LaunchedEffect(data.loginApiResult) {
-        when(data.loginApiResult){
-            is ApiResult.Success->{
-                navController.navigate(Home(userName = employeeCode, password = password))
-                Toast.makeText(context,"Login Success",Toast.LENGTH_SHORT).show()
+        data.loginApiResult.let { response ->
+            when (response) {
+                is ApiResult.Success -> {
+                    navController.navigate(Home(UserDetail(userName = employeeCode, password = password)))
+                    Toast.makeText(context, "Login Success", Toast.LENGTH_SHORT).show()
+                }
+
+                is ApiResult.Error -> {
+                    Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
+                }
+
+                else -> {}
             }
-            else->{}
         }
     }
 
-    PermissionHandler()
     Scaffold {
 
         Column(
@@ -145,19 +151,23 @@ fun LoginScreen(data: LoginState, onEvent: (LoginEvent) -> Unit,navController: N
             CustomButton(
                 text = "Get Code",
                 onClick = {
-                     onEvent(
-                         LoginEvent.LoginApiCall(
-                        username = employeeCode,
-                        password = password,
-                        lat = 28.5022445,
-                        long = 77.0986009))
+                    /*onEvent(
+                        LoginEvent.LoginApiCall(
+                            username = employeeCode,
+                            password = password,
+                            lat = 28.5022445,
+                            long = 77.0986009
+                        )
+                    )*/
+                    navController.navigate(Home(UserDetail(userName = employeeCode, password = password)))
+
 
                 },
                 modifier = Modifier.padding(top = 30.dp),
                 isEnable = isButtonEnable.value
             )
         }
-        if(data.isLoading){
+        if (data.isLoading) {
             CustomLoader()
         }
     }
@@ -166,6 +176,10 @@ fun LoginScreen(data: LoginState, onEvent: (LoginEvent) -> Unit,navController: N
 @Preview
 @Composable
 private fun LoginScreenPreview() {
-    LoginScreen(data = LoginState(), onEvent = {}, rememberNavController())
+    LoginScreen(
+        data = LoginState(),
+        onEvent = {},
+        rememberNavController()
+    )
 
 }

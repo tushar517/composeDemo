@@ -12,21 +12,14 @@ import com.example.coroutinechannel.ui.screens.LoginScreen
 import com.example.coroutinechannel.ui.screens.SearchResultScreen
 import com.example.coroutinechannel.viewModel.home.HomeViewModel
 import com.example.coroutinechannel.viewModel.login.LoginViewModel
+import kotlin.reflect.typeOf
 
 @Composable
-fun HomeGraph(navHostController: NavHostController){
+fun HomeGraph(navHostController: NavHostController) {
     NavHost(
         navController = navHostController,
         startDestination = Login,
-    ){
-        composable<Home> {entry->
-            val viewModel = hiltViewModel<HomeViewModel>()
-            val data = viewModel.state.collectAsStateWithLifecycle()
-            HomeScreen(
-                data = data.value,
-                onEvent = viewModel::onEvent
-            )
-        }
+    ) {
         composable<Login> {
             val viewModel = hiltViewModel<LoginViewModel>()
             val data = viewModel.state.collectAsStateWithLifecycle()
@@ -36,12 +29,26 @@ fun HomeGraph(navHostController: NavHostController){
                 navHostController
             )
         }
-        composable<SearchResult> {entry->
-            val data = entry.toRoute<SearchResult>()
-            SearchResultScreen(search = SearchModel(
-                query = data.search,
-                count = 10
+        composable<Home>(
+            typeMap = mapOf(typeOf<UserDetail>() to CustomNavType(
+                kClass = UserDetail::class,
+                serializer = UserDetail.serializer()
             ))
+        ) { entry ->
+            val value = entry.toRoute<Home>()
+            val viewModel = hiltViewModel<HomeViewModel>()
+            val data = viewModel.state.collectAsStateWithLifecycle()
+            HomeScreen(
+                data = data.value,
+                onEvent = viewModel::onEvent,
+                navHostController,
+                userDetail = value.userDetail
+            )
+        }
+        composable<SearchResult> { entry ->
+            SearchResultScreen(
+                navHostController
+            )
         }
     }
 }

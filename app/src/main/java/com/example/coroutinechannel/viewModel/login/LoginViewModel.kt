@@ -1,14 +1,12 @@
 package com.example.coroutinechannel.viewModel.login
 
 import android.os.Build
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coroutinechannel.BuildConfig
 import com.example.coroutinechannel.data.model.ApiResult
 import com.example.coroutinechannel.data.model.DeviceInfo
 import com.example.coroutinechannel.data.model.LoginRequest
-import com.example.coroutinechannel.data.model.LoginResponse
 import com.example.coroutinechannel.data.network.datasource.datastore.DataStoreHelper
 import com.example.coroutinechannel.data.network.datasource.datastore.PreferenceKey
 import com.example.coroutinechannel.data.network.datasource.remote.usecase.AuthUseCase
@@ -48,13 +46,13 @@ class LoginViewModel @Inject constructor(
                     try{
                         if (response.status) {
                             loginState.value = loginState.value.copy(
-                                loginApiResult = ApiResult.Success<LoginResponse>(response),
+                                loginApiResult = ApiResult.Success(response),
                                 isLoading = false
                             )
-                            /*dataStore.setData(PreferenceKey.authToken,response.data.AUTH_TOKEN)*/
+                            dataStore.setData(PreferenceKey.authToken,response.response.AUTH_TOKEN)
                         } else {
                             loginState.value = loginState.value.copy(
-                                loginApiResult = ApiResult.Error(response.description),
+                                loginApiResult = ApiResult.Error(response.response.description),
                                 isLoading = false
                             )
                         }

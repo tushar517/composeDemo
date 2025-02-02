@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.coroutinechannel.navigation.HomeGraph
+import com.example.coroutinechannel.ui.components.PermissionHandler
 import com.example.coroutinechannel.ui.theme.CoroutineChannelTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,6 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CoroutineChannelTheme {
                 val navHostController = rememberNavController()
+                PermissionHandler()
                 HomeGraph(
                     navHostController = navHostController
                 )

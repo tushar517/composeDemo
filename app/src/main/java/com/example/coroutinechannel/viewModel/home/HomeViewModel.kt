@@ -15,14 +15,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    val savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
 ):ViewModel() {
     private val homeState= MutableStateFlow(HomeState())
-    val userDetail = savedStateHandle.toRoute<Home>()
+//    val savedetail = savedStateHandle.toRoute<Home>()
     val state: StateFlow<HomeState> get() = homeState.onStart {
         homeState.value = homeState.value.copy(
-            userName = userDetail.userName,
-            password = userDetail.password
+            /*userName = savedetail.userDetail.userName,
+            password = savedetail.userDetail.password*/
         )
     }.stateIn(
         scope = viewModelScope,
