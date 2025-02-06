@@ -76,6 +76,7 @@ fun LoginScreen(data: LoginState, onEvent: (LoginEvent) -> Unit, navController: 
 
                 else -> {}
             }
+
         }
     }
 

@@ -1,10 +1,9 @@
 package com.example.coroutinechannel.ui.components
 
-import android.graphics.pdf.models.ListItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,8 +18,9 @@ import com.example.coroutinechannel.ui.theme.white_C8
 
 @Composable
 fun ListItem(
-    awb:Long,
-    desc:String
+    awb: String,
+    desc: String,
+    function: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth().background(
@@ -33,11 +33,13 @@ fun ListItem(
         )
     ){
         Text(
-            text = awb.toString(),
+            text = awb,
             style = typography.bodyMedium.copy(
                 color = white_C8
             ),
-            modifier = Modifier.padding(top = 15.dp, start = 15.dp, end = 15.dp)
+            modifier = Modifier.padding(top = 15.dp, start = 15.dp, end = 15.dp).clickable {
+                function()
+            }
         )
         Text(
             text = desc,

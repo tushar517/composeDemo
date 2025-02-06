@@ -20,3 +20,15 @@ data class SearchResult(val search:String)
 
 @Serializable
 data class SearchModel(val query:String,val count:Int)
+
+@Serializable
+object MainPage
+
+@Serializable
+object DetailPage
+
+@Serializable
+object SettingPage
+
+@Serializable
+object ProfilePage
